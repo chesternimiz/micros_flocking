@@ -1,0 +1,46 @@
+<!-- xml -->
+<launch>
+
+  <!-- Name of the map to use (without path nor extension) and initial position -->
+  <arg name="map_file"       default=" $(find multi_robot_stage)/maps/micros_flocking.yaml"/> <!-- robopark_plan -->
+  <arg name="world_file"     default=" $(find multi_robot_stage)/maps/stage/output.world"/>
+
+  <param name="/use_sim_time" value="true"/>
+  
+  <!--node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)">
+    <param name="frame_id" value="/map"/>
+  </node-->
+  
+  <node pkg="stage_ros" type="stageros" name="stageros" args="$(arg world_file)">
+    
+  </node>
+  
+  <!--include file="$(find multi_robot_stage)/launch/robot_model.launch"/-->
+  <!--include file="$(find multi_robot_stage)/launch/navigation.launch"/-->
+
+  <!--  **************** Visualisation ****************  -->
+  <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find multi_robot_stage)/rviz/multi_robot_navigation.rviz"/>
+  <node name="sound_play" pkg="sound_play" type="soundplay_node.py" />
+  <node name="play_builtin" pkg="sound_play" type="playbuiltin.py" /-->
+  <node name="sim_s" pkg="micros_flocking" type="sim_manager" output="screen">
+      <param name='robotnum' value='50'/>
+  </node>
+
+  <node name="data_s" pkg="micros_flocking" type="data_manager" output="screen">
+      <param name='robotnum' value='50'/>
+  </node>
+  <!--
+ <group ns="robot_0">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_1">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_2">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_3">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_4">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_5">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_6">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_7">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_8">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_9">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_10">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ <group ns="robot_11">  <node name="sim_s" pkg="micros_flocking" type="sim_simplifier.py" /></group>
+ -->
+</launch>

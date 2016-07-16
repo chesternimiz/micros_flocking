@@ -1,0 +1,164 @@
+<launch>
+  <group ns='robot_50'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+
+  <group ns='robot_51'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_52'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+ 
+  <group ns='robot_53'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_54'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_55'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  
+  <group ns='robot_56'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_57'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_58'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_59'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_60'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_61'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_62'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_63'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_64'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_65'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  
+  <group ns='robot_66'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_67'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_68'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_69'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+
+  <group ns='robot_70'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+
+  <group ns='robot_71'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_72'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+ 
+  <group ns='robot_73'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_74'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_75'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  
+  <group ns='robot_76'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_77'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_78'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_79'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_80'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_81'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_82'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_83'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_84'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_85'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  
+  <group ns='robot_86'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_87'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_88'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_89'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_90'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+
+  <group ns='robot_91'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_92'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+ 
+  <group ns='robot_93'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_94'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_95'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  
+  <group ns='robot_96'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_97'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_98'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+  <group ns='robot_99'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+</launch>

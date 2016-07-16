@@ -1,0 +1,67 @@
+<launch>
+  <group ns='robot_15'>
+  <node name="ms" pkg="swarm" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_37'>
+  <node name="ms" pkg="swarm" type="alpha" />
+  </group>
+<!--
+  <group ns='robot_2'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+ 
+  <group ns='robot_3'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_4'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_5'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  
+  <group ns='robot_6'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_7'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_8'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_9'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_10'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_11'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_12'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_13'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_14'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_15'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  
+  <group ns='robot_16'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_17'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_18'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+  <group ns='robot_19'>
+  <node name="ms" pkg="swarm" type="alpha_agent.py" />
+  </group>
+ -->
+</launch>

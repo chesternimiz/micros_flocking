@@ -1,0 +1,71 @@
+<launch>
+  <node name="hector_manager" pkg="swarm" type="hector_manager" output="screen">
+  <param name='robotnum' value='10'/>
+  </node>
+  <group ns='uav0'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+
+  <group ns='uav1'>
+  <node name="ms" pkg="swarm" type="hector_alpha" output="screen" />
+  </group>
+  <group ns='uav2'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+ 
+  <group ns='uav3'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav4'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav5'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  
+  <group ns='uav6'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav7'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav8'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav9'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <!--
+  <group ns='uav10'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav11'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav12'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav13'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav14'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav15'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  
+  <group ns='uav16'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav17'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav18'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+  <group ns='uav19'>
+  <node name="ms" pkg="swarm" type="hector_alpha" />
+  </group>
+-->
+</launch>

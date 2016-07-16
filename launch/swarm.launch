@@ -1,0 +1,315 @@
+<launch>
+    <node name="robot_broadcaster_node" pkg="swarm" type="robot_broadcaster.py" >
+       <param name='robotnum' value='4'/>
+    </node>
+ <group ns='robot_0'>
+    <node name="ob_detect_node" pkg="swarm" type="obstacle_detect.py" />
+    <node name="noise_node" pkg="swarm" type="noise.py" output='screen'>
+       <param name='low' value='-0.1' />
+       <param name='up' value='0.1' />
+       <remap from='cmd_vel' to='noise' />
+    </node>
+    <node name="fgor_nav_node" pkg="swarm" type="fgor_nav.py" >
+       <!--remap from='cmd_vel' to='switch_0/input_0'/-->
+    </node>
+    <node name="robot_detect_node" pkg="swarm" type="robot_detect.py" >
+       <param name='robot_id' value='0'/>
+       <param name='robot_num' value='4'/>
+    </node>
+    <group ns='switch_0'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='0'/>
+          <param name='behavior_id' value='0'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_0/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='3.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_0/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_1'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='0'/>
+          <param name='behavior_id' value='1'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_0/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='4.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_0/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_2'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='0'/>
+          <param name='behavior_id' value='2'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_0/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='5.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_0/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_3'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='0'/>
+          <param name='behavior_id' value='3'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_0/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='6.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_0/base_pose_ground_truth'/>
+       </node>
+    </group>
+ </group>
+
+ <group ns='robot_1'>
+    <node name="ob_detect_node" pkg="swarm" type="obstacle_detect.py" />
+    <node name="noise_node" pkg="swarm" type="noise.py" output='screen'>
+       <param name='low' value='-0.1' />
+       <param name='up' value='0.1' />
+       <remap from='cmd_vel' to='noise' />
+    </node>
+    <node name="fgor_nav_node" pkg="swarm" type="fgor_nav.py" />
+    <node name="robot_detect_node" pkg="swarm" type="robot_detect.py" >
+       <param name='robot_id' value='1'/>
+       <param name='robot_num' value='4'/>
+    </node>
+     
+    <group ns='switch_0'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='1'/>
+          <param name='behavior_id' value='0'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_1/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='3.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_1/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_1'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='1'/>
+          <param name='behavior_id' value='1'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_1/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='4.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_1/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_2'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='1'/>
+          <param name='behavior_id' value='2'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_1/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='5.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_1/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_3'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='1'/>
+          <param name='behavior_id' value='3'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_1/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='6.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_1/base_pose_ground_truth'/>
+       </node>
+    </group>
+ </group>
+
+ <group ns='robot_2'>
+    <node name="ob_detect_node" pkg="swarm" type="obstacle_detect.py" />
+    <node name="noise_node" pkg="swarm" type="noise.py" output='screen'>
+       <param name='low' value='-0.1' />
+       <param name='up' value='0.1' />
+       <remap from='cmd_vel' to='noise' />
+    </node>
+    <node name="fgor_nav_node" pkg="swarm" type="fgor_nav.py" />
+    <node name="robot_detect_node" pkg="swarm" type="robot_detect.py" >
+       <param name='robot_id' value='2'/>
+       <param name='robot_num' value='4'/>
+    </node>
+    <group ns='switch_0'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='2'/>
+          <param name='behavior_id' value='0'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_2/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='3.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_2/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_1'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='2'/>
+          <param name='behavior_id' value='1'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_2/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='4.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_2/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_2'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='2'/>
+          <param name='behavior_id' value='2'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_2/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='5.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_2/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_3'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='2'/>
+          <param name='behavior_id' value='3'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_2/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='6.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_2/base_pose_ground_truth'/>
+       </node>
+    </group>
+ </group>
+
+ <group ns='robot_3'>
+    <node name="ob_detect_node" pkg="swarm" type="obstacle_detect.py" />
+    <node name="noise_node" pkg="swarm" type="noise.py" output='screen'>
+       <param name='low' value='-0.1' />
+       <param name='up' value='0.1' />
+       <remap from='cmd_vel' to='noise' />
+    </node>
+    <node name="fgor_nav_node" pkg="swarm" type="fgor_nav.py" />
+    <node name="robot_detect_node" pkg="swarm" type="robot_detect.py" >
+       <param name='robot_id' value='3'/>
+       <param name='robot_num' value='4'/>
+    </node>
+    <group ns='switch_0'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='3'/>
+          <param name='behavior_id' value='0'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_3/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='3.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_3/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_1'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='3'/>
+          <param name='behavior_id' value='1'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_3/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='4.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_3/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_2'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='3'/>
+          <param name='behavior_id' value='2'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_3/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='5.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_3/base_pose_ground_truth'/>
+       </node>
+    </group>
+
+    <group ns='switch_3'>
+       <node name="mb0" pkg="swarm" type="position_mb.py" output='screen'>
+          <param name='robot_id' value='3'/>
+          <param name='behavior_id' value='3'/>
+          <remap from='inc_input' to='formation_position' />
+       </node>
+       <node name="switch_0" pkg="swarm" type="pos_switch.py" >
+          <remap from='output' to='/robot_3/formation_position' />
+       </node>
+       <node name="formation_0_node" pkg="swarm" type="formation.py" >
+          <param name='targetx' value='6.0' />
+          <param name='targety' value='4.0' />
+          <remap from='base_pose_ground_truth' to='/robot_3/base_pose_ground_truth'/>
+       </node>
+    </group>
+ </group>
+</launch>

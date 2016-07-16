@@ -1,0 +1,4 @@
+<launch>
+    <node name="robot_0_o_detect" pkg="multi_robot_patrol" type="obstacle_detect.py" />
+    <node name="robot_0_avoid" pkg="multi_robot_patrol" type="avoid.py" />
+</launch>
