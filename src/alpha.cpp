@@ -19,18 +19,20 @@ double PI=acos(-1);
 #define B 5
 const double C = abs(A-B) / sqrt(4*A*B);
 #define H 0.2
-#define D 10
-#define R 12
-#define C1 0.1
+#define D 20
+#define R 25
+#define C1 0.05
 #define C2 0.3
-#define rspeedlimit 2
+#define rspeedlimit 4
 #define basespeed 0
 #define ploss 0
-#define diffdrive false
+#define diffdrive true
+
+#define max_turn 0.7
 bool neighbor_loss=false;
 int hz=10;
-bool delay_enabled = true;
-
+bool delay_enabled = false;
+int delay_time = 200;
 
 
 double   interval=1.0/hz;
@@ -272,8 +274,13 @@ void spin_thread()
     {
        if(delay_enabled)
         {
-           int sleep_sec = (rand()%1000)*0.5;
+           int sleep_sec = delay_time;
             boost::this_thread::sleep(boost::posix_time::millisec(sleep_sec));
+        }
+       else
+       {
+             ros::Rate loop_rate(hz);
+             loop_rate.sleep();
         }
        ros::spinOnce();
     }
@@ -373,7 +380,34 @@ int main(int argc, char** argv)
       }
       else
       {
-         // double cos = (sendmsg.linear.x*lastmsg.linear.x+sendmsg.linear.y*lastmsg.linear.y)/sqrt()
+         geometry_msgs:: Twist senddiff;
+         if(sendmsg.linear.x==0 && sendmsg.linear.y==0)
+             pub.publish(senddiff);
+          else{
+             double fi = PI/2;
+          if(sendmsg.linear.x!=0) 
+          {
+              fi=atan(sendmsg.linear.y/sendmsg.linear.x);
+              if(sendmsg.linear.x<0&&sendmsg.linear.y>=0)
+                  fi+=PI;
+              else if (sendmsg.linear.x<0 && sendmsg.linear.y<0)
+                  fi-=PI;
+          }
+          else if (sendmsg.linear.y<0)
+             fi= -PI/2;
+          
+          double theta_diff= fi - my_theta;
+          double v_value = sqrt(sendmsg.linear.x*sendmsg.linear.x+sendmsg.linear.y*sendmsg.linear.y);
+          //double my_v_value = sqrt(my_velocity.first*my_velocity.first+my_velocity.second*my_velocity.second);
+          senddiff.linear.x = v_value;
+          senddiff.angular.z = theta_diff * hz;
+          if(senddiff.angular.z > max_turn)
+              senddiff.angular.z = max_turn;
+          if(senddiff.angular.z < - max_turn)
+              senddiff.angular.z = - max_turn;
+          pub.publish(senddiff);
+          }
+        
       }
       
       lastmsg.linear.x = sendmsg.linear.x;

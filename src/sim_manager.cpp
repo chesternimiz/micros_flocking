@@ -12,10 +12,11 @@
 #include <cmath>
 #include <ctime>
 using namespace std;
-#define R 12
+#define R 25
 #define sendT 1
 #define perror 0  //value
 #define verror 0 //rate
+int robotnum=50;
 class OdomHandle
 {
     public:
@@ -85,7 +86,7 @@ class OdomHandle
 };
 
 static vector<OdomHandle*> odom_list;
-int robotnum=50;
+
 vector<vector<int> > adj_list;
 
 double dist(int i,int j)

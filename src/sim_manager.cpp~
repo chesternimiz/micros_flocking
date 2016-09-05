@@ -12,7 +12,7 @@
 #include <cmath>
 #include <ctime>
 using namespace std;
-#define R 12
+#define R 25
 #define sendT 1
 #define perror 0  //value
 #define verror 0 //rate
@@ -39,7 +39,7 @@ class OdomHandle
 
         stringstream ss2;
         ss2<<"/robot_"<<r_id<<"/neighbor";
-        neighbor_pub = n.advertise<::Neighbor>(ss2.str(),1000);
+        neighbor_pub = n.advertise<micros_flocking::Neighbor>(ss2.str(),1000);
         _px=0;
         _py=0;
         _vx=0;
