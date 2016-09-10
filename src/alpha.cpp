@@ -3,6 +3,7 @@
 #include "geometry_msgs/Twist.h"
 #include "micros_flocking/Neighbor.h"
 #include "micros_flocking/Position.h"
+#include "micros_flocking/Gradient.h"
 #include <string>
 #include <list>
 #include <vector>
@@ -24,11 +25,11 @@ const double C = abs(A-B) / sqrt(4*A*B);
 #define C1 0.05
 #define C2 0.3
 #define rspeedlimit 4
-#define basespeed 0
-#define ploss 0
+double basespeed = 0;
+#define ploss 0 //max1000
 #define diffdrive true
-
 #define max_turn 0.7
+bool move_vl = false;
 bool neighbor_loss=false;
 int hz=10;
 bool delay_enabled = false;
@@ -45,6 +46,7 @@ class NeighborHandle
     pair<double,double> _position,_velocity;
     int _r_id; 
     double mypm_g;
+    int gradient;
     NeighborHandle(int r_id)
     {
         ros::NodeHandle n;
@@ -59,6 +61,7 @@ class NeighborHandle
         _velocity=pair<double,double>(0,0);
         _r_id = r_id;
         mypm_g=1;
+        gradient = -1;
     }
     
     void cb(const micros_flocking::Position::ConstPtr & msg)
@@ -74,6 +77,7 @@ class NeighborHandle
         _vy=msg->vy;
         _position.first=_px;_position.second=_py;
         _velocity.first=_vx;_velocity.second=_vy;
+        gradient=msg->gradient;
         //cout<<"neighbor pose updated"<<endl;
         //_vx=1;_vy=1;//myx=1;myy=1;
         //cout<<_r_id<<endl;
@@ -132,6 +136,7 @@ static void neighbor_cb(const micros_flocking::Neighbor::ConstPtr & msg)
     
 }
 
+double my_gradient = -1;
 void my_position_cb(const micros_flocking::Position::ConstPtr & msg)
 {
     my_position.first = msg->px;
@@ -139,6 +144,7 @@ void my_position_cb(const micros_flocking::Position::ConstPtr & msg)
     my_velocity.first = msg->vx;
     my_velocity.second = msg->vy;
     my_theta = msg->theta;
+    my_gradient = msg->gradient;
     //cout<<"my pose updated"<<endl;
 }
 
@@ -228,12 +234,13 @@ pair<double,double> f_d()
     return re;
 }
 
-
+pair<double,double> q_r = pair<double,double>(0,0);
+pair<double,double> p_r = pair<double,double>(basespeed,basespeed);
 pair<double,double> f_r()
 {
     pair<double,double> re = pair<double,double>(0,0);
-    static pair<double,double> q_r = pair<double,double>(0,0);
-    pair<double,double> p_r = pair<double,double>(basespeed,basespeed);
+    
+    
     q_r.first += p_r.first * interval;
     q_r.second += p_r.second * interval;
     //cout<<q_r.first<<' '<<q_r.second;
@@ -294,7 +301,8 @@ int main(int argc, char** argv)
    ros::Subscriber sub = n.subscribe("neighbor", 1000, neighbor_cb);
    ros::Subscriber sub_pos = n.subscribe("position", 1000, my_position_cb);
    //neighbor_list.push_back(NeighborHandle(1));
-   
+   ros::Publisher gradient_pub = n.advertise<micros_flocking::Gradient>("gradient",1000);
+
    ros::Rate loop_rate(hz);
    //ros::spin();
    geometry_msgs:: Twist msg;
@@ -305,14 +313,28 @@ int main(int argc, char** argv)
    boost::thread thrd(&spin_thread);
    //thrd.join();
    //cout<<"111111111111111111112222222222222222222"<<endl;
+   int time_count=0;
    while(ros::ok())
    {
       //ros::spinOnce();
       //update_param();
       //cout<<pm1<<endl;
       pair<double,double> temp = f_r();
+      if(my_gradient <= 10){
       msg.linear.x += (f_g().first*pm1+f_d().first*pm2+temp.first*pm3)/hz;
-      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;
+      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;}
+      else
+      {
+          msg.linear.x += (f_g().first*pm1+f_d().first*pm2)/hz;
+          msg.linear.y += (f_g().second*pm1+f_d().second*pm2)/hz;
+       }
+
+       if(move_vl)
+       {
+           p_r.first = 1;
+           if(time_count>10*120)
+               p_r.second = -1;
+       }
      // cout<<f_g().first<<' '<<f_d().first<<' '<<msg.linear.x<<endl;
       //cout<<f_g().second<<' '<<f_d().second<<' '<<msg.linear.y<<endl;
      /*
@@ -353,6 +375,33 @@ int main(int argc, char** argv)
       sendmsg.linear.y = basespeed;
       sendmsg.linear.x += msg.linear.x;
       sendmsg.linear.y += msg.linear.y;
+
+      
+      micros_flocking::Gradient sendgradient;
+      double dist_vl = pow(get_vector(q_r,my_position).first,2)+pow(get_vector(q_r,my_position).second,2);
+      if(dist_vl<= R*R)
+      {
+          sendgradient.gradient=1;
+      }
+      else
+      {
+           int minNeighbor = -1;bool inswarm=false;
+           for(list<NeighborHandle*>::iterator i=neighbor_list.begin();i!=neighbor_list.end();i++)
+           {
+                if(!inswarm &&(*i)->gradient >0 )
+                {
+                    minNeighbor = (*i)->gradient;
+                    inswarm=true;               
+                 }
+                if((*i)->gradient >0&& (*i)->gradient <minNeighbor )
+                    minNeighbor = (*i)->gradient;
+           }
+           if(!inswarm || minNeighbor > my_gradient)
+               sendgradient.gradient = -1;
+           else
+               sendgradient.gradient = minNeighbor + 1;
+      }
+      gradient_pub.publish(sendgradient);
       if(!diffdrive)
       {
           if(sendmsg.linear.x==0 && sendmsg.linear.y==0)
@@ -413,6 +462,7 @@ int main(int argc, char** argv)
       lastmsg.linear.x = sendmsg.linear.x;
       lastmsg.linear.y = sendmsg.linear.y;
       loop_rate.sleep();
+      time_count++;
    }
    return 0;
 }

@@ -5,4 +5,4 @@ float64 vy
 float64 pz
 float64 vz
 float64 az
-geometry_msgs/Quaternion orientation
+float64 theta

@@ -3,6 +3,7 @@
 #include "geometry_msgs/Twist.h"
 #include "micros_flocking/Neighbor.h"
 #include "micros_flocking/Position.h"
+#include "micros_flocking/Gradient.h"
 #include "nav_msgs/Odometry.h"
 #include <string>
 #include <list>
@@ -23,10 +24,13 @@ class OdomHandle
     ros::Subscriber sub;
     ros::Publisher pub;
     ros::Publisher neighbor_pub;
+
+    ros::Subscriber gradient_sub;
     double _px,_py,_vx,_vy;
     pair<double,double> _position,_velocity;
     int _r_id; 
     int rcvcount;
+    int gradient;
     OdomHandle(int r_id)
     {
         ros::NodeHandle n;
@@ -41,6 +45,10 @@ class OdomHandle
         stringstream ss2;
         ss2<<"/robot_"<<r_id<<"/neighbor";
         neighbor_pub = n.advertise<micros_flocking::Neighbor>(ss2.str(),1000);
+
+        stringstream ss3;
+        ss3<<"/robot_"<<r_id<<"/gradient";
+        gradient_sub = n.subscribe(ss3.str(), 1000, &OdomHandle::cb_gradient,this);
         _px=0;
         _py=0;
         _vx=0;
@@ -49,6 +57,7 @@ class OdomHandle
         _velocity=pair<double,double>(0,0);
         _r_id = r_id;
         rcvcount = 0;
+        gradient = -1;
     }
     
     void cb(const nav_msgs::Odometry::ConstPtr & msg)
@@ -73,12 +82,18 @@ class OdomHandle
         sendmsg.py=_py+(rand()%2001-1000)/1000.0*perror;
         sendmsg.vx=(_vx+3)*(1+(rand()%2001-1000)/1000.0*verror)-3;
         sendmsg.vy=(_vy+3)*(1+(rand()%2001-1000)/1000.0*verror)-3;
+
+        sendmsg.gradient = gradient;
         sendmsg.theta = tf::getYaw(msg->pose.pose.orientation);
         pub.publish(sendmsg);
         //_vx=1;_vy=1;//myx=1;myy=1;
         //cout<<_r_id<<endl;
     }
 
+    void cb_gradient(const micros_flocking::Gradient::ConstPtr & msg)
+    {
+         gradient = msg -> gradient;
+     }
     void close()
     {
         sub.shutdown();

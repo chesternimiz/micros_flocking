@@ -62,6 +62,7 @@ catkin_python_setup()
    Inc.msg
    Neighbor.msg
    Position.msg
+   Gradient.msg
  )
 
 ## Generate services in the 'srv' folder
@@ -124,6 +125,7 @@ add_executable(sim_manager src/sim_manager.cpp)
 add_executable(hector_alpha src/hector_alpha.cpp) 
 add_executable(hector_manager src/hector_manager.cpp) 
 add_executable(data_manager src/data_manager.cpp)
+add_executable(diff_control src/diff_control.cpp)
 
 add_dependencies(alpha ${micros_flocking_EXPORTED_TARGETS})
 ## Add cmake target dependencies of the executable/library
@@ -144,6 +146,9 @@ target_link_libraries( alpha
    ${catkin_LIBRARIES}
  )
  target_link_libraries( data_manager 
+   ${catkin_LIBRARIES}
+ )
+ target_link_libraries( diff_control 
    ${catkin_LIBRARIES}
  )
 #############

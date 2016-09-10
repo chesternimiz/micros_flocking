@@ -6,3 +6,4 @@ float64 pz
 float64 vz
 float64 az
 float64 theta
+int32 gradient
