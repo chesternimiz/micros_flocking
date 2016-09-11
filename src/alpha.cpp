@@ -35,6 +35,10 @@ int hz=10;
 bool delay_enabled = false;
 int delay_time = 200;
 
+#define krho 0.3
+double kalpha =0.8;
+#define kbeta -0.15
+
 
 double   interval=1.0/hz;
 double pm1=0.3,pm2=1,pm3=0.3;
@@ -51,7 +55,7 @@ class NeighborHandle
     {
         ros::NodeHandle n;
         stringstream ss;
-        ss<<"/robot_"<<r_id<<"/position";
+        ss<<"/robot_"<<r_id<<"/vpoint_position";
         sub = n.subscribe(ss.str(), 1000, &NeighborHandle::cb,this);
         _px=0;
         _py=0;
@@ -89,6 +93,8 @@ class NeighborHandle
     }
 };
 static list<NeighborHandle*> neighbor_list;
+pair<double,double> my_vpoint_position=pair<double,double>(0,0);
+pair<double,double> my_vpoint_velocity=pair<double,double>(0,0);
 pair<double,double> my_position=pair<double,double>(0,0);
 pair<double,double> my_velocity=pair<double,double>(0,0);
 double my_theta = 0;
@@ -137,6 +143,17 @@ static void neighbor_cb(const micros_flocking::Neighbor::ConstPtr & msg)
 }
 
 double my_gradient = -1;
+void my_vpoint_position_cb(const micros_flocking::Position::ConstPtr & msg)
+{
+    my_vpoint_position.first = msg->px;
+    my_vpoint_position.second = msg->py;
+    my_vpoint_velocity.first = msg->vx;
+    my_vpoint_velocity.second = msg->vy;
+    //my_theta = msg->theta;
+    my_gradient = msg->gradient;
+    //cout<<"my pose updated"<<endl;
+}
+
 void my_position_cb(const micros_flocking::Position::ConstPtr & msg)
 {
     my_position.first = msg->px;
@@ -144,7 +161,9 @@ void my_position_cb(const micros_flocking::Position::ConstPtr & msg)
     my_velocity.first = msg->vx;
     my_velocity.second = msg->vy;
     my_theta = msg->theta;
-    my_gradient = msg->gradient;
+
+    
+    //my_gradient = msg->gradient;
     //cout<<"my pose updated"<<endl;
 }
 
@@ -206,7 +225,7 @@ pair<double,double> f_g()
     pair<double,double> re = pair<double,double>(0,0);
     for(list<NeighborHandle*>::iterator i=neighbor_list.begin();i!=neighbor_list.end();i++)
     {
-        pair<double,double> q_ij = get_vector(my_position,(*i)->_position);
+        pair<double,double> q_ij = get_vector(my_vpoint_position,(*i)->_position);
         pair<double,double> n_ij = segma_epsilon(q_ij);
         re.first += phi_alpha(segma_norm(q_ij))*n_ij.first*(*i)->mypm_g;
         re.second += phi_alpha(segma_norm(q_ij))*n_ij.second*(*i)->mypm_g;
@@ -216,7 +235,7 @@ pair<double,double> f_g()
 
 double a_ij(pair<double,double> j_p)
 {
-    return rho(segma_norm(get_vector(my_position,j_p)) / R_alpha);
+    return rho(segma_norm(get_vector(my_vpoint_position,j_p)) / R_alpha);
 }
 
 pair<double,double> f_d()
@@ -225,7 +244,7 @@ pair<double,double> f_d()
    // int count=0;
     for(list<NeighborHandle*>::iterator i=neighbor_list.begin();i!=neighbor_list.end();i++)
     {
-        pair<double,double> p_ij = get_vector(my_velocity,(*i)->_velocity);
+        pair<double,double> p_ij = get_vector(my_vpoint_velocity,(*i)->_velocity);
         re.first += a_ij((*i)->_position) * p_ij.first;
         re.second += a_ij((*i)->_position) * p_ij.second;
        // count++;
@@ -244,9 +263,9 @@ pair<double,double> f_r()
     q_r.first += p_r.first * interval;
     q_r.second += p_r.second * interval;
     //cout<<q_r.first<<' '<<q_r.second;
-    re.first = -C1*get_vector(q_r,my_position).first - C2*get_vector(p_r,my_velocity).first;
-    re.second = -C1*get_vector(q_r,my_position).second - C2*get_vector(p_r,my_velocity).second;
-    //cout<<q_r.first<<' '<<q_r.second<<' '<<get_vector(q_r,my_position).first<<' '<<get_vector(q_r,my_position).second<<endl;
+    re.first = -C1*get_vector(q_r,my_vpoint_position).first - C2*get_vector(p_r,my_vpoint_velocity).first;
+    re.second = -C1*get_vector(q_r,my_vpoint_position).second - C2*get_vector(p_r,my_vpoint_velocity).second;
+    //cout<<q_r.first<<' '<<q_r.second<<' '<<get_vector(q_r,my_vpoint_position).first<<' '<<get_vector(q_r,my_vpoint_position).second<<endl;
     return re;
 }
 
@@ -255,7 +274,7 @@ void update_param()
     double mindist=2*R;
     for(list<NeighborHandle*>::iterator i=neighbor_list.begin();i!=neighbor_list.end();i++)
     {
-        pair<double,double> q_ij = get_vector(my_position,(*i)->_position);
+        pair<double,double> q_ij = get_vector(my_vpoint_position,(*i)->_position);
         double dist = sqrt(q_ij.first*q_ij.first+q_ij.second*q_ij.second);
         if(mindist>dist)
              mindist=dist;/*
@@ -292,6 +311,41 @@ void spin_thread()
        ros::spinOnce();
     }
 }
+
+
+
+class diff_tracking_thread
+{
+    public:
+    ros::Publisher * pub;
+    diff_tracking_thread(ros::Publisher * p)
+    {
+        pub = p;
+    }
+    void operator() ()
+    {
+    ros::Rate loop_rate(100);
+    while(ros::ok())
+    {
+         double delta_x = -my_vpoint_position.first +my_position.first;
+          double delta_y = -my_vpoint_position.second +my_position.second;
+          if(delta_x!=0 ){
+          double alpha = atan(delta_y/delta_x) - my_theta;
+          double beta = - alpha - my_theta;
+
+          double rho = sqrt(delta_x*delta_x+delta_y*delta_y);
+          geometry_msgs:: Twist senddiffmsg;
+          senddiffmsg.linear.x = krho*rho;
+          if(delta_x > 0)
+             senddiffmsg.linear.x *= -1.0;
+          senddiffmsg.angular.z = kalpha*alpha + kbeta*beta;
+      
+          pub->publish(senddiffmsg);
+          loop_rate.sleep();
+          }
+    }
+    }
+};
 int main(int argc, char** argv)
 {
    srand(time(0));
@@ -299,9 +353,11 @@ int main(int argc, char** argv)
    ros::NodeHandle n;
    ros::Publisher pub = n.advertise<geometry_msgs::Twist>("cmd_vel",1000);
    ros::Subscriber sub = n.subscribe("neighbor", 1000, neighbor_cb);
+   ros::Subscriber sub_vpoint_pos = n.subscribe("vpoint_position", 1000, my_vpoint_position_cb);
    ros::Subscriber sub_pos = n.subscribe("position", 1000, my_position_cb);
    //neighbor_list.push_back(NeighborHandle(1));
    ros::Publisher gradient_pub = n.advertise<micros_flocking::Gradient>("gradient",1000);
+   ros::Publisher vpoint_pub = n.advertise<micros_flocking::Position>("vpoint_position",1000);
 
    ros::Rate loop_rate(hz);
    //ros::spin();
@@ -314,11 +370,24 @@ int main(int argc, char** argv)
    //thrd.join();
    //cout<<"111111111111111111112222222222222222222"<<endl;
    int time_count=0;
+   bool diff_thread_ok = false;
+   while(my_position.first == 0)
+   {
+       ros::spinOnce();
+       loop_rate.sleep();
+   }
+   my_vpoint_position.first = my_position.first;
+   my_vpoint_position.second = my_position.second;
+   my_vpoint_velocity.first = my_velocity.first;
+   my_vpoint_velocity.second = my_velocity.second;
    while(ros::ok())
    {
       //ros::spinOnce();
       //update_param();
       //cout<<pm1<<endl;
+      
+    
+
       pair<double,double> temp = f_r();
       if(my_gradient <= 10){
       msg.linear.x += (f_g().first*pm1+f_d().first*pm2+temp.first*pm3)/hz;
@@ -378,7 +447,7 @@ int main(int argc, char** argv)
 
       
       micros_flocking::Gradient sendgradient;
-      double dist_vl = pow(get_vector(q_r,my_position).first,2)+pow(get_vector(q_r,my_position).second,2);
+      double dist_vl = pow(get_vector(q_r,my_vpoint_position).first,2)+pow(get_vector(q_r,my_vpoint_position).second,2);
       if(dist_vl<= R*R)
       {
           sendgradient.gradient=1;
@@ -402,6 +471,19 @@ int main(int argc, char** argv)
                sendgradient.gradient = minNeighbor + 1;
       }
       gradient_pub.publish(sendgradient);
+
+      my_vpoint_velocity.first = sendmsg.linear.x;
+      my_vpoint_velocity.second = sendmsg.linear.y;
+      my_vpoint_position.first += my_vpoint_velocity.first / hz;
+      my_vpoint_position.second += my_vpoint_velocity.second / hz;
+          
+      micros_flocking::Position sendvpoint;
+      sendvpoint.px =  my_vpoint_position.first;
+      sendvpoint.py =  my_vpoint_position.second;
+      sendvpoint.vx =  my_vpoint_velocity.first;
+      sendvpoint.vy =  my_vpoint_velocity.second;
+      vpoint_pub.publish(sendvpoint);
+
       if(!diffdrive)
       {
           if(sendmsg.linear.x==0 && sendmsg.linear.y==0)
@@ -428,7 +510,7 @@ int main(int argc, char** argv)
           }
       }
       else
-      {
+      {/*
          geometry_msgs:: Twist senddiff;
          if(sendmsg.linear.x==0 && sendmsg.linear.y==0)
              pub.publish(senddiff);
@@ -447,7 +529,7 @@ int main(int argc, char** argv)
           
           double theta_diff= fi - my_theta;
           double v_value = sqrt(sendmsg.linear.x*sendmsg.linear.x+sendmsg.linear.y*sendmsg.linear.y);
-          //double my_v_value = sqrt(my_velocity.first*my_velocity.first+my_velocity.second*my_velocity.second);
+          //double my_v_value = sqrt(my_vpoint_velocity.first*my_vpoint_velocity.first+my_vpoint_velocity.second*my_vpoint_velocity.second);
           senddiff.linear.x = v_value;
           senddiff.angular.z = theta_diff * hz;
           if(senddiff.angular.z > max_turn)
@@ -456,7 +538,30 @@ int main(int argc, char** argv)
               senddiff.angular.z = - max_turn;
           pub.publish(senddiff);
           }
-        
+        */
+         //tracking vpoint
+/*
+          double delta_x = -my_vpoint_position.first +my_position.first;
+          double delta_y = -my_vpoint_position.second +my_position.second;
+          if(delta_x!=0 ){
+          double alpha = atan(delta_y/delta_x) - my_theta;
+          double beta = - alpha - my_theta;
+
+          double rho = sqrt(delta_x*delta_x+delta_y*delta_y);
+          geometry_msgs:: Twist senddiffmsg;
+          senddiffmsg.linear.x = krho*rho;
+          if(delta_x > 0)
+             senddiffmsg.linear.x *= -1.0;
+          senddiffmsg.angular.z = kalpha*alpha + kbeta*beta;
+      
+          pub.publish(senddiffmsg);
+          }*/
+          if(!diff_thread_ok)
+          {
+              diff_thread_ok = true;
+              diff_tracking_thread dtt(& pub);
+              boost::thread thrd2(dtt);
+          }
       }
       
       lastmsg.linear.x = sendmsg.linear.x;

@@ -73,6 +73,8 @@ int main(int argc, char** argv)
       double rho = sqrt(delta_x*delta_x+delta_y*delta_y);
       geometry_msgs:: Twist sendmsg;
       sendmsg.linear.x = krho*rho;
+      if(delta_x > 0)
+         sendmsg.linear.x = - sendmsg.linear.x;
       sendmsg.angular.z = kalpha*alpha + kbeta*beta;
       cout<<alpha<<' '<<beta<<' '<<my_theta<<endl;
       pub.publish(sendmsg);
