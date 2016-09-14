@@ -1,0 +1,334 @@
+<launch>
+  <group ns='robot_0'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+
+  <group ns='robot_1'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_2'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen" />
+  </group>
+ 
+  <group ns='robot_3'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_4'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_5'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  
+  <group ns='robot_6'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_7'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_8'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_9'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_10'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_11'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_12'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_13'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_14'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_15'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  
+  <group ns='robot_16'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_17'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_18'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_19'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+
+  <group ns='robot_20'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+
+  <group ns='robot_21'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_22'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+ 
+  <group ns='robot_23'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_24'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_25'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  
+  <group ns='robot_26'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_27'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_28'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_29'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_30'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_31'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen" />
+  </group>
+  <group ns='robot_32'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_33'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_34'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_35'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  
+  <group ns='robot_36'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_37'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_38'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_39'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_40'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+
+  <group ns='robot_41'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_42'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+ 
+  <group ns='robot_43'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_44'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_45'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen" />
+  </group>
+  
+  <group ns='robot_46'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_47'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_48'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+  <group ns='robot_49'>
+  <node name="ms" pkg="micros_flocking" type="alpha" output="screen"/>
+  </group>
+
+   <group ns='robot_50'><param name='vpointid' value='0'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_51'><param name='vpointid' value='1'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_52'><param name='vpointid' value='2'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen" />
+  </group>
+ 
+  <group ns='robot_53'><param name='vpointid' value='3'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_54'><param name='vpointid' value='4'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_55'><param name='vpointid' value='5'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  
+  <group ns='robot_56'><param name='vpointid' value='6'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_57'><param name='vpointid' value='7'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_58'><param name='vpointid' value='8'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_59'><param name='vpointid' value='9'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_60'><param name='vpointid' value='10'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_61'><param name='vpointid' value='11'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_62'><param name='vpointid' value='12'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen" />
+  </group>
+ 
+  <group ns='robot_63'><param name='vpointid' value='13'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_64'><param name='vpointid' value='14'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_65'><param name='vpointid' value='15'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  
+  <group ns='robot_66'><param name='vpointid' value='16'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_67'><param name='vpointid' value='17'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_68'><param name='vpointid' value='18'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_69'><param name='vpointid' value='19'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_70'><param name='vpointid' value='20'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_71'><param name='vpointid' value='21'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_72'><param name='vpointid' value='22'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen" />
+  </group>
+ 
+  <group ns='robot_73'><param name='vpointid' value='23'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_74'><param name='vpointid' value='24'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_75'><param name='vpointid' value='25'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  
+  <group ns='robot_76'><param name='vpointid' value='26'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_77'><param name='vpointid' value='27'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_78'><param name='vpointid' value='28'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_79'><param name='vpointid' value='29'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_80'><param name='vpointid' value='30'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_81'><param name='vpointid' value='31'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_82'><param name='vpointid' value='32'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen" />
+  </group>
+ 
+  <group ns='robot_83'><param name='vpointid' value='33'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_84'><param name='vpointid' value='34'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_85'><param name='vpointid' value='35'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  
+  <group ns='robot_86'><param name='vpointid' value='36'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_87'><param name='vpointid' value='37'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_88'><param name='vpointid' value='38'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_89'><param name='vpointid' value='39'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_90'><param name='vpointid' value='40'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+
+  <group ns='robot_91'><param name='vpointid' value='41'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_92'><param name='vpointid' value='42'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen" />
+  </group>
+ 
+  <group ns='robot_93'><param name='vpointid' value='43'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_94'><param name='vpointid' value='44'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_95'><param name='vpointid' value='45'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  
+  <group ns='robot_96'><param name='vpointid' value='46'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_97'><param name='vpointid' value='47'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_98'><param name='vpointid' value='48'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+  <group ns='robot_99'><param name='vpointid' value='49'/>
+  <node name="ms" pkg="micros_flocking" type="vpoint" output="screen"/>
+  </group>
+</launch>

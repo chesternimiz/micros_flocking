@@ -24,10 +24,10 @@ const double C = abs(A-B) / sqrt(4*A*B);
 #define R 25
 #define C1 0.05
 #define C2 0.3
-#define rspeedlimit 1
+#define rspeedlimit 4
 double basespeed = 0;
 #define ploss 0 //max1000
-#define diffdrive true
+#define diffdrive false
 #define max_turn 0.7
 bool move_vl = false;
 bool neighbor_loss=false;
@@ -55,7 +55,7 @@ class NeighborHandle
     {
         ros::NodeHandle n;
         stringstream ss;
-        ss<<"/robot_"<<r_id<<"/vpoint_position";
+        ss<<"/robot_"<<r_id<<"/position";
         sub = n.subscribe(ss.str(), 1000, &NeighborHandle::cb,this);
         _px=0;
         _py=0;
@@ -340,8 +340,6 @@ class diff_tracking_thread
               alpha = -atan(delta_y/delta_x) - r_theta;
               beta = - alpha - r_theta;
           }
-          else
-              continue;
           double rho = sqrt(delta_x*delta_x+delta_y*delta_y);
           geometry_msgs:: Twist senddiffmsg;
           senddiffmsg.linear.x = krho*rho;
@@ -395,19 +393,17 @@ int main(int argc, char** argv)
       //update_param();
       //cout<<pm1<<endl;
       
-       my_vpoint_position.first += my_vpoint_velocity.first / (double)hz;
-      my_vpoint_position.second += my_vpoint_velocity.second / (double)hz;
-      //my_vpoint_position.first = my_position.first;
-      //my_vpoint_position.second = my_position.second;
+    
+
       pair<double,double> temp = f_r();
-      //if(my_gradient <= 10){
+      if(my_gradient <= 10){
       msg.linear.x += (f_g().first*pm1+f_d().first*pm2+temp.first*pm3)/hz;
-      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;//}
-     /*else
+      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;}
+      else
       {
           msg.linear.x += (f_g().first*pm1+f_d().first*pm2)/hz;
           msg.linear.y += (f_g().second*pm1+f_d().second*pm2)/hz;
-       }*/
+       }
 
        if(move_vl)
        {
@@ -456,7 +452,7 @@ int main(int argc, char** argv)
       sendmsg.linear.x += msg.linear.x;
       sendmsg.linear.y += msg.linear.y;
 
-      /*
+      
       micros_flocking::Gradient sendgradient;
       double dist_vl = pow(get_vector(q_r,my_vpoint_position).first,2)+pow(get_vector(q_r,my_vpoint_position).second,2);
       if(dist_vl<= R*R)
@@ -481,7 +477,7 @@ int main(int argc, char** argv)
            else
                sendgradient.gradient = minNeighbor + 1;
       }
-      gradient_pub.publish(sendgradient);*/
+      gradient_pub.publish(sendgradient);
       
       double v_dist_x = my_vpoint_position.first - my_position.first;
       double v_dist_y = my_vpoint_position.second - my_position.second;
@@ -490,12 +486,14 @@ int main(int argc, char** argv)
           cout<<"warning:"<<v_dist<<endl;
       my_vpoint_velocity.first = sendmsg.linear.x;
       my_vpoint_velocity.second = sendmsg.linear.y;
-     
+      my_vpoint_position.first += my_vpoint_velocity.first / hz;
+      my_vpoint_position.second += my_vpoint_velocity.second / hz;
           
 //test
-     // my_vpoint_velocity.first = my_velocity.first;
-      //my_vpoint_velocity.second = my_velocity.second;
-      
+      my_vpoint_velocity.first = my_velocity.first;
+      my_vpoint_velocity.second = my_velocity.second;
+      my_vpoint_position.first = my_position.first;
+      my_vpoint_position.second = my_position.second;
 
       micros_flocking::Position sendvpoint;
       sendvpoint.px =  my_vpoint_position.first;

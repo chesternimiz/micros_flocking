@@ -24,7 +24,7 @@ const double C = abs(A-B) / sqrt(4*A*B);
 #define R 25
 #define C1 0.05
 #define C2 0.3
-#define rspeedlimit 4
+#define rspeedlimit 1
 double basespeed = 0;
 #define ploss 0 //max1000
 #define diffdrive true
@@ -305,7 +305,7 @@ void spin_thread()
         }
        else
        {
-             ros::Rate loop_rate(hz);
+             ros::Rate loop_rate(100);
              loop_rate.sleep();
         }
        ros::spinOnce();
@@ -327,22 +327,33 @@ class diff_tracking_thread
     ros::Rate loop_rate(100);
     while(ros::ok())
     {
-         double delta_x = -my_vpoint_position.first +my_position.first;
-          double delta_y = -my_vpoint_position.second +my_position.second;
-          if(delta_x!=0 ){
+         double delta_x = my_vpoint_position.first - my_position.first;
+          double delta_y = my_vpoint_position.second - my_position.second;
+          
           double alpha = atan(delta_y/delta_x) - my_theta;
           double beta = - alpha - my_theta;
-
+          if(my_vpoint_position.first == my_position.first)
+          {
+              loop_rate.sleep();continue;
+          }
+          else if(delta_x < 0.0)
+          {
+              double r_theta = PI - my_theta;//if my_theta >0
+              if(my_theta < 0.0)
+                 r_theta = -PI - my_theta;
+              alpha = -atan(delta_y/delta_x) - r_theta;
+              beta = - alpha - r_theta;
+          }
           double rho = sqrt(delta_x*delta_x+delta_y*delta_y);
           geometry_msgs:: Twist senddiffmsg;
           senddiffmsg.linear.x = krho*rho;
-          if(delta_x > 0)
-             senddiffmsg.linear.x *= -1.0;
           senddiffmsg.angular.z = kalpha*alpha + kbeta*beta;
-      
+
+          if(delta_x < 0.0)
+              senddiffmsg.angular.z = - senddiffmsg.angular.z;
           pub->publish(senddiffmsg);
           loop_rate.sleep();
-          }
+          
     }
     }
 };
@@ -353,7 +364,7 @@ int main(int argc, char** argv)
    ros::NodeHandle n;
    ros::Publisher pub = n.advertise<geometry_msgs::Twist>("cmd_vel",1000);
    ros::Subscriber sub = n.subscribe("neighbor", 1000, neighbor_cb);
-   ros::Subscriber sub_vpoint_pos = n.subscribe("vpoint_position", 1000, my_vpoint_position_cb);
+  //test ros::Subscriber sub_vpoint_pos = n.subscribe("vpoint_position", 1000, my_vpoint_position_cb);
    ros::Subscriber sub_pos = n.subscribe("position", 1000, my_position_cb);
    //neighbor_list.push_back(NeighborHandle(1));
    ros::Publisher gradient_pub = n.advertise<micros_flocking::Gradient>("gradient",1000);
@@ -386,17 +397,19 @@ int main(int argc, char** argv)
       //update_param();
       //cout<<pm1<<endl;
       
-    
-
+       my_vpoint_position.first += my_vpoint_velocity.first / (double)hz;
+      my_vpoint_position.second += my_vpoint_velocity.second / (double)hz;
+      //my_vpoint_position.first = my_position.first;
+      //my_vpoint_position.second = my_position.second;
       pair<double,double> temp = f_r();
-      if(my_gradient <= 10){
+      //if(my_gradient <= 10){
       msg.linear.x += (f_g().first*pm1+f_d().first*pm2+temp.first*pm3)/hz;
-      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;}
-      else
+      msg.linear.y += (f_g().second*pm1+f_d().second*pm2+temp.second*pm3)/hz;//}
+     /*else
       {
           msg.linear.x += (f_g().first*pm1+f_d().first*pm2)/hz;
           msg.linear.y += (f_g().second*pm1+f_d().second*pm2)/hz;
-       }
+       }*/
 
        if(move_vl)
        {
@@ -445,7 +458,7 @@ int main(int argc, char** argv)
       sendmsg.linear.x += msg.linear.x;
       sendmsg.linear.y += msg.linear.y;
 
-      
+      /*
       micros_flocking::Gradient sendgradient;
       double dist_vl = pow(get_vector(q_r,my_vpoint_position).first,2)+pow(get_vector(q_r,my_vpoint_position).second,2);
       if(dist_vl<= R*R)
@@ -470,13 +483,22 @@ int main(int argc, char** argv)
            else
                sendgradient.gradient = minNeighbor + 1;
       }
-      gradient_pub.publish(sendgradient);
-
+      gradient_pub.publish(sendgradient);*/
+      
+      double v_dist_x = my_vpoint_position.first - my_position.first;
+      double v_dist_y = my_vpoint_position.second - my_position.second;
+      double v_dist = sqrt(v_dist_x*v_dist_x + v_dist_y*v_dist_y);
+      if( v_dist > R)
+          cout<<"warning:"<<v_dist<<endl;
       my_vpoint_velocity.first = sendmsg.linear.x;
       my_vpoint_velocity.second = sendmsg.linear.y;
-      my_vpoint_position.first += my_vpoint_velocity.first / hz;
-      my_vpoint_position.second += my_vpoint_velocity.second / hz;
+     
           
+//test
+     // my_vpoint_velocity.first = my_velocity.first;
+      //my_vpoint_velocity.second = my_velocity.second;
+      
+
       micros_flocking::Position sendvpoint;
       sendvpoint.px =  my_vpoint_position.first;
       sendvpoint.py =  my_vpoint_position.second;

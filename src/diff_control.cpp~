@@ -14,9 +14,9 @@
 #include <boost/thread/thread.hpp> 
 using namespace std;
 
-#define krho 0.3
-double kalpha =0.8;
-#define kbeta -0.15
+#define krho 3
+double kalpha =8;
+#define kbeta -1.5
 double hz = 10;
 double PI=acos(-1);
 pair<double,double> target_position = pair<double,double>(0,0);
@@ -48,13 +48,25 @@ int main(int argc, char** argv)
    while(ros::ok())
    {
       ros::spinOnce();
-      double delta_x = -target_position.first +my_position.first;
-      double delta_y = -target_position.second +my_position.second;
+      if(my_position.first==0.1) continue;
+      double delta_x = target_position.first -my_position.first;
+      double delta_y = target_position.second -my_position.second;
+
+      
+      
       double alpha = atan(delta_y/delta_x) - my_theta;
       double beta = - alpha - my_theta;
-/*
-      double beta = PI/2.0;
-      //if(delta_x ==0)
+      if(delta_x < 0.0)
+      {
+          cout<<"reverse"<<endl;
+          double r_theta = PI - my_theta;//if my_theta >0
+          if(my_theta < 0.0)
+             r_theta = -PI - my_theta;
+          alpha = -atan(delta_y/delta_x) - r_theta;
+          beta = - alpha - r_theta;
+      }
+    /*  double beta = PI/2.0;
+      //if(delta_x ==0.0)
          //if(delta_y < 0)
             //beta = -PI/2.0;
       //else{
@@ -74,7 +86,13 @@ int main(int argc, char** argv)
       geometry_msgs:: Twist sendmsg;
       sendmsg.linear.x = krho*rho;
       sendmsg.angular.z = kalpha*alpha + kbeta*beta;
-      cout<<alpha<<' '<<beta<<' '<<my_theta<<endl;
+      if(delta_x < 0.0)
+         sendmsg.angular.z = - sendmsg.angular.z;
+      //if(delta_x < 0)
+         //sendmsg.linear.x = - sendmsg.linear.x;
+           //sendmsg.angular.z = -sendmsg.angular.z;
+      
+      cout<<sendmsg.linear.x<<endl;
       pub.publish(sendmsg);
       loop_rate.sleep();
    }

@@ -27,7 +27,7 @@ const double C = abs(A-B) / sqrt(4*A*B);
 #define rspeedlimit 4
 double basespeed = 0;
 #define ploss 0 //max1000
-#define diffdrive true
+#define diffdrive false
 #define max_turn 0.7
 bool move_vl = false;
 bool neighbor_loss=false;
