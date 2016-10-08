@@ -24,8 +24,8 @@ const double C = abs(A-B) / sqrt(4*A*B);
 #define R 25
 #define C1 0.05
 #define C2 0.3
-#define rspeedlimit 1
-double basespeed = 0;
+#define rspeedlimit 2.0
+double basespeed = 3;
 #define ploss 0 //max1000
 #define diffdrive true
 #define max_turn 0.7
@@ -35,9 +35,10 @@ int hz=10;
 bool delay_enabled = false;
 int delay_time = 200;
 
-#define krho 0.3
-double kalpha =0.8;
-#define kbeta -0.15
+#define krho 0.3*(rspeedlimit+basespeed)/2
+double kalpha =0.8*(rspeedlimit+basespeed)/2;
+#define kbeta -0.15*(rspeedlimit+basespeed)/2
+double keepdistance = sqrt(rspeedlimit/krho);
 
 
 double   interval=1.0/hz;
@@ -387,8 +388,8 @@ int main(int argc, char** argv)
        ros::spinOnce();
        loop_rate.sleep();
    }
-   my_vpoint_position.first = my_position.first;
-   my_vpoint_position.second = my_position.second;
+   my_vpoint_position.first = my_position.first+keepdistance;
+   my_vpoint_position.second = my_position.second+keepdistance;
    my_vpoint_velocity.first = my_velocity.first;
    my_vpoint_velocity.second = my_velocity.second;
    while(ros::ok())

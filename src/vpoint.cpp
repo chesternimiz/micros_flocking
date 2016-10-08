@@ -4,6 +4,7 @@
 #include "micros_flocking/Neighbor.h"
 #include "micros_flocking/Position.h"
 #include "micros_flocking/Gradient.h"
+#include "nav_msgs/Odometry.h"
 #include <string>
 #include <list>
 #include <vector>
@@ -289,7 +290,15 @@ void spin_thread()
     }
 }
 
-
+    double _px,_py,_vx,_vy;
+    void p_cb(const nav_msgs::Odometry::ConstPtr & msg)
+    {
+        
+        _px=msg->pose.pose.position.x;
+        _py=msg->pose.pose.position.y;
+        _vx=msg->twist.twist.linear.x;
+        _vy=msg->twist.twist.linear.y;
+    }
 
 int main(int argc, char** argv)
 {
@@ -303,7 +312,7 @@ int main(int argc, char** argv)
    stringstream ss;
    ss<<"/robot_"<<vpointid<<"/vpoint_position";
    ros::Subscriber sub_vpoint_pos = n.subscribe(ss.str(), 1000, my_vpoint_position_cb);
-
+   ros::Subscriber sub_my_pos = n.subscribe("base_pose_ground_truth", 1000, p_cb);
   // cout<<vpointid<<endl;
    ros::Rate loop_rate(hz);
  
@@ -312,10 +321,26 @@ int main(int argc, char** argv)
 
    boost::thread thrd(&spin_thread);
 
+   while(_px==0.0 || my_vpoint_position.first==0.0){loop_rate.sleep();}
+   double kkk=8;
+   double rk=1.0;
    while(ros::ok())
    {
-      sendmsg.linear.x = my_vpoint_velocity.first;
-      sendmsg.linear.y = my_vpoint_velocity.second;
+double delta_x = my_vpoint_position.first - _px;
+double delta_y = my_vpoint_position.second - _py;
+double dist = sqrt(delta_x*delta_x+delta_y*delta_y);
+      cout<<dist<<endl;
+      if(dist<1.0) kkk=3;
+      else if(dist<5.0) kkk=5*(dist-1.0)/4+3;
+      else kkk=10;
+      
+      sendmsg.linear.x = rk*delta_x+my_vpoint_velocity.first;
+      sendmsg.linear.y = rk*delta_y+my_vpoint_velocity.second;
+      if(dist<0.5) rk=dist;
+      //sendmsg.linear.x = kkk*delta_x;
+      //sendmsg.linear.y = kkk*delta_y;
+      //sendmsg.linear.x = my_vpoint_velocity.first;
+      //sendmsg.linear.y = my_vpoint_velocity.second;
       pub.publish(sendmsg);
       loop_rate.sleep();
    }
